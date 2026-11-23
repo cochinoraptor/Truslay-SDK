@@ -68,7 +68,7 @@ Then link it into your n8n custom folder:
 
 ```bash
 cd ~/.n8n/custom
-npm link /path/to/Truslay-Showcase/integrations/n8n-node
+npm link /path/to/Truslay-SDK/integrations/n8n
 ```
 
 `npm run build` compiles `credentials/`, `nodes/` and `index.ts` into `dist/`,

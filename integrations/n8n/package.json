@@ -12,11 +12,11 @@
   ],
   "license": "MIT",
   "author": "Truslay",
-  "homepage": "https://github.com/cochinoraptor/Truslay-Showcase/tree/main/integrations/n8n-node",
+  "homepage": "https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations/n8n",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cochinoraptor/Truslay-Showcase.git",
-    "directory": "integrations/n8n-node"
+    "url": "git+https://github.com/cochinoraptor/Truslay-SDK.git",
+    "directory": "integrations/n8n"
   },
   "main": "index.js",
   "types": "dist/index.d.ts",

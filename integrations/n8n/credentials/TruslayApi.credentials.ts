@@ -6,7 +6,7 @@ export class TruslayApi implements ICredentialType {
 	displayName = 'Truslay API';
 
 	documentationUrl =
-		'https://github.com/cochinoraptor/Truslay-Showcase/tree/main/integrations/n8n-node#credentials';
+		'https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations/n8n#credentials';
 
 	properties: INodeProperties[] = [
 		{
