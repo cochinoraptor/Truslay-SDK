@@ -1,0 +1,17 @@
+{
+  "name": "truslay-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Truslay SDK and its third-party integrations",
+  "license": "MIT",
+  "workspaces": [
+    "integrations/*"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}
