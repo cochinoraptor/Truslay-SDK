@@ -25,7 +25,7 @@ export class Truslay implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Truslay',
 		name: 'truslay',
-		icon: 'fa:shield-halved',
+		icon: 'file:truslay-logo.png',
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["intent"]}}',

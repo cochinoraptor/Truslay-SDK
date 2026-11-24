@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-truslay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Truslay firewall for n8n: evaluate an action before your workflow runs it and stop, error or flag it when the verdict is BLOCK.",
   "keywords": [
     "n8n-community-node-package",
@@ -27,7 +27,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').cpSync('nodes/Truslay/truslay-logo.png','dist/nodes/Truslay/truslay-logo.png')\"",
     "dev": "tsc --watch",
     "typecheck": "tsc --noEmit"
   },
