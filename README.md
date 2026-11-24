@@ -9,7 +9,7 @@ people already use.
 ├── sdk/                    # npm: @truslay/sdk
 └── integrations/
     ├── n8n/                    # n8n-nodes-truslay
-    ├── pipedream-app/          # Pipedream app + Evaluate Action
+    ├── pipedream-app/          # Pipedream App (truslay.app.mjs + logo)
     ├── make-app/               # Make custom app
     └── zapier/                 # planned
 ```
@@ -20,7 +20,7 @@ people already use.
 | --- | --- | --- |
 | `sdk/` | [`@truslay/sdk`](https://www.npmjs.com/package/@truslay/sdk) | The published SDK: `TruslayUniversalClient`, local guards, and the firewall decision client |
 | `integrations/n8n/` | [`n8n-nodes-truslay`](integrations/n8n/README.md) | n8n community node: gate a workflow step on a Truslay verdict |
-| `integrations/pipedream-app/` | — | Pipedream app: `Evaluate Action` in the app selector, with its own logo |
+| `integrations/pipedream-app/` | `truslay-pipedream-app` | Pipedream App with its own branding (`truslay.app.mjs` + logo) and the `Evaluate Action` action; code ready, pending registration of the `truslay` slug in the Pipedream marketplace |
 | `integrations/make-app/` | — | Make custom app: `Evaluate Action` module for visual automations |
 | `integrations/zapier/` | — | Zapier app (not started) |
 

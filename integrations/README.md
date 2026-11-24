@@ -6,7 +6,7 @@ npm package with its own README, tests and release cycle.
 | Integration | Package | Status |
 | --- | --- | --- |
 | [n8n](n8n/README.md) | `n8n-nodes-truslay` | Node implemented — not published yet |
-| [pipedream](pipedream-app/README.md) | `truslay-pipedream-app` | App + `Evaluate Action` implemented — not registered yet |
+| [pipedream](pipedream-app/README.md) | `truslay-pipedream-app` | App with branding (`truslay.app.mjs` + logo) and `Evaluate Action` implemented — pending `truslay` app registration in Pipedream |
 | [make](make-app/README.md) | `truslay-make-app` | Custom app implemented — not published yet |
 | zapier | — | Planned |
 
