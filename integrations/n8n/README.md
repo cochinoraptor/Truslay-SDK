@@ -59,7 +59,7 @@ services:
 ### 3. From this repository (development)
 
 ```bash
-cd integrations/n8n-node
+cd integrations/n8n
 npm install
 npm run build
 ```
