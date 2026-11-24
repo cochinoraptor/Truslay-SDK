@@ -8,9 +8,10 @@ people already use.
 .
 ├── sdk/                    # npm: @truslay/sdk
 └── integrations/
-    ├── n8n/                # n8n-nodes-truslay
-    ├── zapier/             # planned
-    └── make/               # planned
+    ├── n8n/                    # n8n-nodes-truslay
+    ├── pipedream-component/    # Pipedream action component
+    ├── make-app/               # Make custom app
+    └── zapier/                 # planned
 ```
 
 ## What each part is
@@ -19,8 +20,9 @@ people already use.
 | --- | --- | --- |
 | `sdk/` | [`@truslay/sdk`](https://www.npmjs.com/package/@truslay/sdk) | The published SDK: `TruslayUniversalClient`, local guards, and the firewall decision client |
 | `integrations/n8n/` | [`n8n-nodes-truslay`](integrations/n8n/README.md) | n8n community node: gate a workflow step on a Truslay verdict |
+| `integrations/pipedream-component/` | — | Pipedream action component: gate a workflow step on a Truslay verdict |
+| `integrations/make-app/` | — | Make custom app: `Evaluate Action` module for visual automations |
 | `integrations/zapier/` | — | Zapier app (not started) |
-| `integrations/make/` | — | Make app (not started) |
 
 Integrations never import from the SDK source. Each one is an independent
 package that depends on the published `@truslay/sdk`, so a release ships the

@@ -1,0 +1,33 @@
+{
+  "name": "truslay-make-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Make custom app: Evaluate Action module for the Truslay firewall.",
+  "keywords": [
+    "make",
+    "integromat",
+    "truslay",
+    "security",
+    "firewall",
+    "ai-agents"
+  ],
+  "license": "MIT",
+  "author": "Truslay",
+  "homepage": "https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations/make-app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cochinoraptor/Truslay-SDK.git",
+    "directory": "integrations/make-app"
+  },
+  "main": "modules/evaluate-action/execute.js",
+  "files": [
+    "modules",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@truslay/sdk": "^2.1.0"
+  }
+}
