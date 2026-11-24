@@ -21,7 +21,7 @@ people already use.
 | `sdk/` | [`@truslay/sdk`](https://www.npmjs.com/package/@truslay/sdk) | The published SDK: `TruslayUniversalClient`, local guards, and the firewall decision client |
 | `integrations/n8n/` | [`n8n-nodes-truslay`](integrations/n8n/README.md) | n8n community node: gate a workflow step on a Truslay verdict |
 | `integrations/pipedream-app/` | `truslay-pipedream-app` | Pipedream App with its own branding (`truslay.app.mjs` + logo) and the `Evaluate Action` action; code ready, pending registration of the `truslay` slug in the Pipedream marketplace |
-| `integrations/make-app/` | — | Make custom app: `Evaluate Action` module for visual automations |
+| `integrations/make-app/` | `truslay-make-app` | Make Custom App (`app.json` + `Evaluate Agent Action` module bundled with esbuild); sandbox-verified, `truslay` app registration pending |
 | `integrations/zapier/` | — | Zapier app (not started) |
 
 Integrations never import from the SDK source. Each one is an independent

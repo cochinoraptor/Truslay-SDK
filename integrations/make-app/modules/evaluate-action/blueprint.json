@@ -1,0 +1,33 @@
+{
+  "name": "evaluate-action",
+  "label": "Evaluate Agent Action",
+  "description": "Run the Truslay decision engine against an agent intent before executing it.",
+  "parameters": [
+    {
+      "name": "intent",
+      "label": "Agent Intent",
+      "type": "select",
+      "required": true,
+      "values": [
+        { "value": "webhook_incoming", "label": "Webhook Incoming" },
+        { "value": "scraping_request", "label": "Scraping Request" },
+        { "value": "database_write", "label": "Database Write" },
+        { "value": "checkout", "label": "Checkout" },
+        { "value": "agent_navigation", "label": "Agent Navigation" }
+      ]
+    },
+    {
+      "name": "shield_id",
+      "label": "Shield ID (Optional)",
+      "type": "text",
+      "required": false,
+      "description": "e.g., e-commerce, banking, hr. Defaults to client shield."
+    },
+    {
+      "name": "target",
+      "label": "Target URL / Resource",
+      "type": "text",
+      "required": false
+    }
+  ]
+}

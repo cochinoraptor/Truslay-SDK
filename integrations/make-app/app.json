@@ -1,0 +1,22 @@
+{
+  "name": "Truslay",
+  "version": "0.1.0",
+  "description": "Deterministic firewall and trust layer for autonomous AI agents.",
+  "lang": "en",
+  "theme": "#00C853",
+  "connection": {
+    "type": "apiKey",
+    "name": "Truslay API Key",
+    "parameters": [
+      {
+        "name": "apiKey",
+        "label": "API Key",
+        "type": "text",
+        "required": true,
+        "password": true
+      }
+    ]
+  },
+  "parameters": [],
+  "scopes": ["*"]
+}
