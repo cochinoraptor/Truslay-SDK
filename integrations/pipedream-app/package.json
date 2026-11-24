@@ -1,8 +1,8 @@
 {
-  "name": "truslay-pipedream-component",
+  "name": "truslay-pipedream-app",
   "version": "0.1.0",
   "private": true,
-  "description": "Pipedream component that asks the Truslay firewall for a verdict before a workflow step runs.",
+  "description": "Pipedream app for Truslay: ask the firewall for a verdict before a workflow step runs.",
   "keywords": [
     "pipedream",
     "truslay",
@@ -12,16 +12,18 @@
   ],
   "license": "MIT",
   "author": "Truslay",
-  "homepage": "https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations/pipedream-component",
+  "homepage": "https://github.com/cochinoraptor/Truslay-SDK/tree/main/integrations/pipedream-app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cochinoraptor/Truslay-SDK.git",
-    "directory": "integrations/pipedream-component"
+    "directory": "integrations/pipedream-app"
   },
   "type": "module",
-  "main": "TruslayEvaluate.mjs",
+  "main": "truslay.app.mjs",
   "files": [
-    "TruslayEvaluate.mjs",
+    "truslay.app.mjs",
+    "actions",
+    "truslay-logo.png",
     "README.md"
   ],
   "engines": {
