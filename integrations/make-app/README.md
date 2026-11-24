@@ -18,6 +18,46 @@ source.
 - **Two statuses, two facts.** The code being ready does not mean the app is
   installable from the Make catalog; registration is a separate, manual step.
 
+## ✅ Testing Today (HTTP Module)
+
+**This is the officially supported way to use Truslay in Make today**, while the
+Custom App above is unregistered and unreviewed. It needs no Custom Apps access
+and works on the free plan: a native **HTTP → Make a request** module posts to
+the Truslay evaluation webhook, and a **Router** branches on the verdict.
+
+Step-by-step guide: [TESTING_HTTP_MODULE.md](TESTING_HTTP_MODULE.md).
+
+```
+[ HTTP · Make a request ]  POST https://n8n.truslay.com/webhook/<path>
+        │                 body: { intent, target, payload }
+   [ Router ]
+     ├── ALLOW  → [ Email / Google Sheets / database ]   ← the real action
+     ├── BLOCK  → [ Slack / Email alert ]                ← fail closed
+     └── REVIEW → [ Slack / Email alert ]                ← treated as BLOCK
+```
+
+Rules that keep the flow correct:
+
+- **Route on the verdict, not on the HTTP status.** `200` only means the request
+  was accepted; the decision is in `truslay_verdict`.
+- **Only `ALLOW` continues.** Send `BLOCK`, `REVIEW` and any missing/unexpected
+  verdict to the alert branch, ideally through the Router's **Fallback**, so the
+  flow fails closed like the live SDK.
+- **The webhook must return the decision.** n8n's default
+  `Respond: Immediately` answers `{"message":"Workflow was started"}`; set the
+  Webhook node to `When Last Node Finishes` (Response Data: `First Entry JSON`)
+  or use a **Respond to Webhook** node.
+- **Use the Production URL** copied from the Webhook node and keep the workflow
+  active. The path is not fixed, and an inactive workflow returns n8n's
+  `404 … not registered`.
+- **`Parse response: Yes`** in the HTTP module, so `truslay_verdict`,
+  `truslay_reason` and `truslay_environment` are mappable.
+
+Phase status: the HTTP path is usable as soon as the webhook is active. When this
+was written (2026-11-24) the `truslay-evaluate` path returned n8n `404 not
+registered`, so **Step 0 of the guide is mandatory** before the scenario can run.
+This does not publish or register the Custom App; that remains pending.
+
 ### About the file format
 
 Make custom apps are defined as JSON component sections — Base, Connections,
@@ -43,6 +83,7 @@ integrations/make-app/
 ├── app.json                          # app manifest: name, version, connection
 ├── package.json                      # build-only dependencies (esbuild, SDK)
 ├── truslay-logo.png                  # reference logo (128x128)
+├── TESTING_HTTP_MODULE.md            # supported today: HTTP module + Router
 ├── modules/
 │   └── evaluate-action/
 │       ├── blueprint.json            # fields rendered in the Make UI
