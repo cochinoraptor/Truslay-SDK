@@ -17,39 +17,57 @@ that proves what was decided and an on-chain anchor that proves it later.
 - **Auditable.** Every decision is sealed and anchored, not logged in a table
   someone can edit.
 
-## 🏛️ Architecture: The SDK and The Firewall
+## 🏛️ Architecture: The Sovereign Edge vs. The Trust Core
 
-Truslay ships as two complementary halves: an **Edge** that enforces inside your
-process, and a **Core** that governs and notarizes the fleet.
+Truslay is not a wrapper. It ships as two complementary halves: a **Sovereign
+Edge** that enforces inside your code, and a **Trust Core** that governs and
+notarizes the fleet.
 
-### 1. What the SDK (`@truslay/sdk`) is — "The Sovereign Edge"
+### The SDK — the Sovereign Edge
+
+The SDK is a local library that lives in your code. It intercepts the agent's
+actions, evaluates deterministic policies, and blocks execution **fail-closed**
+when there is risk. Every decision is signed locally in **<1 ms**.
 
 - **What it does:** it is the local-first, zero-dependency execution engine. It
   is the **enforcer** that lives inside your application's runtime.
-- **Coverage:** it runs Layers 1 to 5 (Signal, Lattice, Shield, Gate, Seal) and
-  Layer 6 (the local Ledger) in **<1 ms**.
-- **Scope:** full coverage of intent interception, policy evaluation, physical
-  blocking of the tool call (fail-closed), and local cryptographic signing
-  (ed25519). It does not need the internet to protect the agent.
+- **Coverage:** Layers 1 to 6 (Signal, Lattice, Shield, Gate, Seal and the local
+  Ledger), in **<1 ms**.
+- **Scope:** intent interception, policy-graph evaluation, physical blocking of
+  the tool call, and local cryptographic signing. It does not need the network
+  to protect the agent.
 
-### 2. What the Truslay Firewall is — "The Trust Core"
+### The Firewall — the Trust Core
+
+The Firewall is the central governance system. It receives the hashes signed by
+the SDK, chains them into an immutable ledger, and anchors the root of that
+ledger on a decentralized network for external audits.
 
 - **What it does:** it is the holistic security architecture and the governance
   system. It is not "a server that traffic passes through": it is the policy
   brain and the immutable notary.
-- **Coverage:** it contributes Layers 7 and 8 (Anchor and Prism). It manages
-  anchoring the Ledger to the **Sui** blockchain for immutable audit (SOX/GDPR)
-  and provides the observability dashboard for teams.
+- **Coverage:** Layers 7 and 8 (Anchor and Prism). It anchors the root of the
+  ledger for immutable audit (SOX/GDPR) and provides the observability dashboard
+  for teams.
 - **Scope:** fleet-wide cryptographic truth, macro policy management, and the
   human audit interface.
 
-### 3. The synergy
+### Why we are not a wrapper
+
+Traditional guardrails are probabilistic and **fail-open**: they score a prompt,
+hope the model complies, and let the action through when they cannot decide.
+Truslay is **deterministic** and **fail-closed**: if the evaluation engine fails
+or detects a violation, the action is physically blocked and the tool call never
+runs. A wrapper filters text; Truslay removes the decision from the model's
+hands.
+
+### The synergy
 
 The SDK (Edge) intercepts the agent's action and evaluates it locally in
 milliseconds. If it is safe, it seals it (Seal) and lets it execute. If it is
-complex or requires external audit, the SDK pushes the hash to the Firewall
-(Core), which anchors it on Sui (Anchor) and makes it visible in the dashboard
-(Prism).
+complex or requires external audit, the SDK pushes the signed hash to the
+Firewall (Core), which anchors it on the decentralized ledger (Anchor) and makes
+it visible in the dashboard (Prism).
 
 > **"El SDK es el guardián soberano en tu código; el Firewall es la bóveda
 > inmutable en la red. Juntos forman la única capa de confianza determinista
@@ -70,7 +88,7 @@ complex or requires external audit, the SDK pushes the hash to the Firewall
   la Capa 6 (Ledger local) en <1ms.
 - **Alcance:** Tiene cobertura total sobre la interceptación de la intención, la
   evaluación de políticas, el bloqueo físico de la herramienta (Fail-Closed) y
-  la firma criptográfica local (ed25519). No necesita internet para proteger al
+  la firma criptográfica local. No necesita internet para proteger al
   agente.
 
 **2. ¿Qué es el Firewall de Truslay? → "The Trust Core"**
@@ -79,7 +97,7 @@ complex or requires external audit, the SDK pushes the hash to the Firewall
   gobierno. No es un "servidor por el que pasa el tráfico", es el cerebro de
   políticas y el notario inmutable.
 - **Cobertura:** Aporta las Capas 7 y 8 (Anchor y Prism). Gestiona el anclaje
-  del Ledger en la blockchain de Sui para auditoría inmutable (SOX/GDPR) y
+  del Ledger en una red descentralizada para auditoría inmutable (SOX/GDPR) y
   provee el dashboard de observabilidad para equipos.
 - **Alcance:** Proporciona la verdad criptográfica a nivel de flota, la gestión
   de políticas macro y la interfaz de auditoría humana.
@@ -89,7 +107,7 @@ complex or requires external audit, the SDK pushes the hash to the Firewall
 - **El flujo colaborativo:** El SDK (Edge) intercepta la acción del agente y la
   evalúa localmente en milisegundos. Si es segura, la firma (Seal) y la ejecuta.
   Si es compleja o requiere auditoría externa, el SDK empuja el hash al Firewall
-  (Core), que la ancla en Sui (Anchor) y la hace visible en el dashboard (Prism).
+  (Core), que la ancla en el registro descentralizado (Anchor) y la hace visible en el dashboard (Prism).
 - **Mensaje clave:** "El SDK es el guardián soberano en tu código; el Firewall
   es la bóveda inmutable en la red. Juntos forman la única capa de confianza
   determinista para agentes autónomos."
@@ -100,8 +118,8 @@ complex or requires external audit, the SDK pushes the hash to the Firewall
 
 | | SDK — The Sovereign Edge | Firewall — The Trust Core |
 | --- | --- | --- |
-| Runs where | Inside your process / agent runtime | Your control plane + Sui |
-| Layers | 1 Signal · 2 Lattice · 3 Shield · 4 Gate · 5 Seal · 6 Ledger (local) | 7 Anchor (Sui) · 8 Prism |
+| Runs where | Inside your process / agent runtime | Your control plane + decentralized ledger |
+| Layers | 1 Signal · 2 Lattice · 3 Shield · 4 Gate · 5 Seal · 6 Ledger (local) | 7 Anchor (ledger root) · 8 Prism |
 | Latency | < 1 ms, no network required | Asynchronous anchoring and reporting |
 | Blocks execution | Yes — physically, fail-closed | No — it governs, notarizes and observes |
 | Owns | Policy enforcement, local signature | Fleet policy, immutable audit, dashboards |
@@ -114,9 +132,9 @@ complex or requires external audit, the SDK pushes the hash to the Firewall
 | 02 | **Lattice** | Evaluates the intent against the policy graph: limits, whitelists, roles, dual approval. | SDK |
 | 03 | **Shield** | Applies domain rules (finance, HR, health-PII, legal, cyber, DevOps, commerce, support, booking). | SDK |
 | 04 | **Gate** | Enforces the verdict at system level: the tool call is blocked (fail-closed), not "advised against". | SDK |
-| 05 | **Seal** | Signs the decision locally with ed25519, so the verdict cannot be altered after the fact. | SDK |
+| 05 | **Seal** | Signs the decision locally with a cryptographic signature, so the verdict cannot be altered after the fact. | SDK |
 | 06 | **Ledger** | Records the sealed decision in the local append-only ledger, available offline. | SDK |
-| 07 | **Anchor** | Anchors ledger hashes to the **Sui** blockchain for immutable, third-party-verifiable audit (SOX/GDPR). | Firewall |
+| 07 | **Anchor** | Anchors ledger roots on a **decentralized network** for immutable, third-party-verifiable audit (SOX/GDPR). | Firewall |
 | 08 | **Prism** | Fleet observability: dashboards, policy analytics, human audit and evidence export. | Firewall |
 
 The first six layers are the sovereign edge: they run in your runtime and never
@@ -126,8 +144,15 @@ decisions into fleet-wide, immutable evidence.
 ## Install
 
 ```bash
+# The SDK — the Sovereign Edge
 npm install @truslay/sdk
+
+# The n8n community node — gate a workflow step on a Truslay verdict
+npm install n8n-nodes-truslay
 ```
+
+- SDK on npm: <https://www.npmjs.com/package/@truslay/sdk>
+- n8n node on npm: <https://www.npmjs.com/package/n8n-nodes-truslay>
 
 ## Quickstart
 
