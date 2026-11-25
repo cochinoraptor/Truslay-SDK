@@ -1,9 +1,10 @@
 {
   "name": "truslay-sdk",
-  "version": "0.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Truslay SDK and its third-party integrations",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://truslay.com",
   "workspaces": [
     "integrations/*"
   ],
