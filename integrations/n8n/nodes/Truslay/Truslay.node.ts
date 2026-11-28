@@ -12,6 +12,21 @@ type Environment = 'sandbox' | 'live';
 type OnBlockAction = 'stopWorkflow' | 'outputErrorItem' | 'continueWithWarning';
 
 /**
+ * Detecta el fallo de transporte del firewall sin acoplarse a una versión
+ * concreta del SDK: 2.2.0 exporta `TruslayFirewallUnreachable` con `code`,
+ * y 2.1.0 devolvía el BLOCK sin lanzar. Se comprueba `code` y `name` para
+ * funcionar con cualquiera de las dos.
+ */
+function isFirewallUnreachable(error: unknown): boolean {
+	if (!error || typeof error !== 'object') return false;
+	const candidate = error as { code?: unknown; name?: unknown };
+	return (
+		candidate.code === 'TRUSLAY_FIREWALL_UNREACHABLE' ||
+		candidate.name === 'TruslayFirewallUnreachable'
+	);
+}
+
+/**
  * Truslay node: asks the firewall for a verdict before the workflow performs
  * the action represented by each incoming item.
  *
@@ -191,6 +206,20 @@ export class Truslay implements INodeType {
 				default: 'stopWorkflow',
 				description: 'What to do when the firewall returns BLOCK or any verdict other than ALLOW',
 			},
+			{
+				displayName: 'Allow on Firewall Failure',
+				name: 'allowOnFailure',
+				type: 'boolean',
+				default: false,
+				displayOptions: {
+					show: {
+						resource: ['evaluateAction'],
+						operation: ['checkSecurity'],
+					},
+				},
+				description:
+					'Fail-OPEN: forward the item when the firewall cannot be reached instead of stopping the workflow. Off by default (fail-closed); enable it only if you accept acting without a verdict in Live mode.',
+			},
 		],
 	};
 
@@ -288,6 +317,38 @@ export class Truslay implements INodeType {
 					pairedItem: { item: i },
 				});
 			} catch (error) {
+				// Fail-closed es el comportamiento por defecto: sin veredicto no hay
+				// acción. El checkbox existe solo para no romper workflows legacy.
+				if (isFirewallUnreachable(error)) {
+					const allowOnFailure = this.getNodeParameter('allowOnFailure', i, false) as boolean;
+
+					if (allowOnFailure) {
+						const warning =
+							'Truslay firewall unreachable — item forwarded because "Allow on Firewall Failure" is enabled';
+						this.logger.warn(warning);
+						returnData.push({
+							json: {
+								...items[i].json,
+								truslay_verdict: 'FAIL_OPEN',
+								truslay_environment: environment,
+								truslay_warning: warning,
+							},
+							pairedItem: { item: i },
+						});
+						continue;
+					}
+
+					throw new NodeOperationError(
+						this.getNode(),
+						'Truslay firewall unreachable: the workflow stopped (fail-closed)',
+						{
+							itemIndex: i,
+							description:
+								'The action behind this item was NOT executed because the firewall could not return a verdict. Enable "Allow on Firewall Failure" only if you accept running without one.',
+						},
+					);
+				}
+
 				if (this.continueOnFail()) {
 					returnData.push({
 						json: {
